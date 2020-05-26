@@ -7,15 +7,21 @@ dockerからjenkinsを動かせることを目的とする。
 ### イメージ作成
 `docker build -t jenkins .`    
 ### コンテナ作成
-`docker run --name jenkins  -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenkins`
+`docker run --name jenkins -u root -p 8080:8080 -p 50000:50000 -v /c/Users/[適当なパス]:/var/jenkins_home -d jenkins`
 
-### イメージ作成
 ※pullする場合
+### イメージ作成
 `docker pull jenkins/jenkins:2.190`
 ### コンテナ作成
-`docker run --name jenkins  -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -d jenkins/jenkins:2.190`
+`docker run --name jenkins -u root -p 8080:8080 -p 50000:50000 -v /c/Users/[適当なパス]:/var/jenkins_home -d jenkins/jenkins:2.190`
 
-### コンテナを実行する
+
+
+```
+権限をrootにしないとパーミッションエラーでマウント出来ない
+```
+
+### コンテナの中に入る実行する
 `docker exec -it jenkins bash`
 
 
@@ -30,3 +36,7 @@ docker stop jenkins
 
 ### コンテナを再開する
 docker start jenkins
+
+
+## windowsのフォルダにマウント出来ない場合
+dockerのsetting画面を開き、Shared Drivesにチェックがついていることを確認してResetする。
