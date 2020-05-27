@@ -1,11 +1,17 @@
-FROM jenkins/jenkins:2.190
+FROM jenkins/jenkins:2.190.1
 
-# install via apt
 USER root
+
+# Disabling the Setup Wizard
+# ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
 # install jenkins plugins
 COPY plugins.txt /usr/share/jenkins/plugins.txt
 RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
 
-# drop back to the regular jenkins user - good practice
-# USER jenkins
+#create user 
+ENV JENKINS_USER admin
+ENV JENKINS_PASS admin
+
+COPY initScript/custom.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY initScript/default-user.groovy /usr/share/jenkins/ref/init.groovy.d/
